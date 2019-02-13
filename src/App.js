@@ -7,9 +7,16 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      todo: [{ "Learn setState()": false, "Style my Todo List": false }]
+      todo: [{ "Learn setState()": true }, { "Style my Todo List": true }]
     };
   }
+
+  updateTodo = newItem => {
+    let { todo } = this.state;
+    todo.push({ [newItem]: true });
+
+    this.setState({ todo });
+  };
   render() {
     return (
       <div className="container">
