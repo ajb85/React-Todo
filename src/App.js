@@ -8,7 +8,8 @@ class App extends React.Component {
 
     this.state = {
       todo: [{ "Learn setState()": true }, { "Style my Todo List": true }],
-      typing: ""
+      typing: "",
+      selected: []
     };
   } // constructor
 
@@ -36,6 +37,19 @@ class App extends React.Component {
     this.setState({ todo, typing });
   };
 
+  handleClear = e => {
+    let { todo, selected } = this.state;
+    console.log("Selected before: ", selected);
+    todo = todo.filter(item => {
+      const name = Object.keys(item)[0];
+      const isSelected = selected.indexOf(name) > -1;
+      if (isSelected) isSelected.splice(selected.indexOf(name), 1);
+      return item[name] || isSelected;
+    });
+
+    this.setState({ todo, selected });
+  };
+
   render() {
     return (
       <div className="container">
@@ -45,6 +59,7 @@ class App extends React.Component {
           typing={this.state.typing}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
+          handleClear={this.handleClear}
         />
       </div>
     );
