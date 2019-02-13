@@ -1,0 +1,11 @@
+.todoList {
+  margin-bottom: 25px;
+}
+
+.todoList p {
+  margin: 7px;
+}
+
+.todoList p.strike {
+  text-decoration: line-through;
+}
