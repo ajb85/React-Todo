@@ -1,13 +1,21 @@
-import React from 'react';
+import React from "react";
+import CreateList from "./comps/List/CreateList.js";
+import CreateForm from "./comps/Form/CreateForm.js";
 
 class App extends React.Component {
-  // you will need a place to store your state in this component.
-  // design `App` to be the parent component of your application.
-  // this component is going to take care of state, and any change handlers you need to work with your state
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      todo: [{ "Learn setState()": false, "Style my Todo List": false }]
+    };
+  }
   render() {
     return (
-      <div>
-        <h2>Welcome to your Todo App!</h2>
+      <div className="container">
+        <h1>Todo List: MVP</h1>
+        <CreateList todo={this.state.todo} />
+        <CreateForm />
       </div>
     );
   }
