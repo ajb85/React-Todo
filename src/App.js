@@ -7,28 +7,33 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      todo: [{ "Learn setState()": true }, { "Style my Todo List": true }]
+      todo: [{ "Learn setState()": true }, { "Style my Todo List": true }],
+      typing: ""
     };
   } // constructor
 
   handleItemClick = e => {
     let { todo } = this.state;
     if (e.target.tagName === "P") {
-      //console.log(e.target.dataset.index);
       const index = e.target.dataset.index;
       const name = Object.keys(todo[index])[0];
-
       todo[index][name] = !todo[index][name];
     }
 
     this.setState({ todo });
   };
 
-  handleSubmit = newItem => {
-    let { todo } = this.state;
-    todo.push({ [newItem]: true });
+  handleChange = e => {
+    this.setState({ typing: e.target.value });
+  };
 
-    this.setState({ todo });
+  handleSubmit = e => {
+    e.preventDefault();
+    let { todo, typing } = this.state;
+
+    todo.push({ [typing]: true });
+    typing = "";
+    this.setState({ todo, typing });
   };
 
   render() {
@@ -36,7 +41,11 @@ class App extends React.Component {
       <div className="container">
         <h1>Todo List: MVP</h1>
         <CreateList todo={this.state.todo} clicked={this.handleItemClick} />
-        <CreateForm />
+        <CreateForm
+          typing={this.state.typing}
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
+        />
       </div>
     );
   }

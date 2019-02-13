@@ -1,6 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
+import CreateInput from "./CreateInput.js";
+import CreateButton from "./CreateButton.js";
 import "./form.css";
-
+// props: typing, handleChange, handleSubmit
 export default props => {
-  return <div className="form">"hello WORLD!"</div>;
+  return (
+    <form onSubmit={props.handleSubmit} className="form">
+      <CreateInput typing={props.typing} handleChange={props.handleChange} />
+      <CreateButton type={"submit"} children={"Add Todo"} />
+      <CreateButton children={"Clear Completed"} />
+    </form>
+  );
 };
