@@ -3,29 +3,56 @@ import CreateList from "./comps/List/CreateList.js";
 import CreateForm from "./comps/Form/CreateForm.js";
 import "./App.css";
 
+const defaultData = JSON.stringify([
+  { name: "Navigate to my To Do list", complete: true },
+  {
+    name: "Learn I can click an item to complete it",
+    complete: false
+  },
+  {
+    name: 'Click "Clear Completed" to remove completed items.',
+    complete: false
+  },
+  {
+    name: "Highlight items then clear to remove multiples at once",
+    complete: false
+  }
+]);
+
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      todo: [
-        { name: "Navigate to my To Do list", complete: true },
-        {
-          name: "Learn I can click an item to complete it",
-          complete: false
-        },
-        {
-          name: 'Click "Clear Completed" to remove completed items.',
-          complete: false
-        },
-        {
-          name: "Highlight items then clear to remove multiples at once",
-          complete: false
-        }
-      ],
-      typing: ""
+      todo: [{ name: "Loading list....", complete: false }],
+      typing: "",
+      search: ""
     };
+
+    this.saveStateToStorage = this.saveStateToStorage.bind(this);
   } // constructor
+
+  componentDidMount() {
+    console.log(localStorage);
+    //localStorage.removeItem("todo");
+    if (!localStorage.length) {
+      localStorage.setItem("todo", defaultData);
+    }
+    this.setState({ todo: JSON.parse(localStorage.getItem("todo")) });
+
+    window.addEventListener("beforeunload", this.saveStateToStorage);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("beforeunload", this.saveStateToStorage);
+    this.saveStateToStorage();
+  }
+
+  saveStateToStorage = () => {
+    let { todo } = this.state;
+
+    localStorage.setItem("todo", JSON.stringify(todo));
+  };
 
   handleItemClick = (i, e) => {
     let { todo } = this.state;
@@ -37,9 +64,10 @@ class App extends React.Component {
     }
   };
 
-  handleChange = e => {
+  handleChange = (context, e) => {
+    console.log("e: ", e, " | context: ", context);
     // Update "typing" state as user types
-    this.setState({ typing: e.target.value });
+    this.setState({ [context]: e.target.value });
   };
 
   handleSubmit = () => {
@@ -106,6 +134,7 @@ class App extends React.Component {
         <h1>Todo List: MVP</h1>
         <CreateList
           todo={this.state.todo}
+          search={this.state.search}
           clicked={this.handleItemClick}
           selected={this.handleSelect}
         />
@@ -114,6 +143,13 @@ class App extends React.Component {
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
           handleClear={this.handleClear}
+        />
+        <span>Search:</span>
+        <input
+          type="text"
+          value={this.state.search}
+          onChange={this.handleChange.bind(this, "search")}
+          className="search"
         />
       </div>
     );

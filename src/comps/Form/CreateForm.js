@@ -14,7 +14,7 @@ export default props => {
         type="text"
         placeholder="...to do"
         value={props.typing}
-        onChange={props.handleChange}
+        onChange={props.handleChange.bind(this, "typing")}
       />
       <CreateButton type={"submit"} children={"Add To Do"} />
       <CreateButton
