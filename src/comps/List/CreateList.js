@@ -8,7 +8,12 @@ export default props => {
     let className = "";
     if (!itemObj[name]) className = "strike";
     return (
-      <p key={i} onClick={props.clicked} className={className} data-index={i}>
+      <p
+        key={i}
+        onMouseDown={props.clicked}
+        className={className}
+        data-index={i}
+      >
         {name}
       </p>
     );

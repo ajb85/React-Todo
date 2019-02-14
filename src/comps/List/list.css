@@ -1,8 +1,10 @@
 .todoList {
   margin-bottom: 25px;
+  max-width: 250px;
 }
 
 .todoList p {
+  cursor: pointer;
   margin: 7px;
 }
 

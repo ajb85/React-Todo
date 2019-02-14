@@ -1,6 +1,7 @@
 import React from "react";
 import CreateList from "./comps/List/CreateList.js";
 import CreateForm from "./comps/Form/CreateForm.js";
+import "./App.css";
 
 class App extends React.Component {
   constructor(props) {
@@ -8,8 +9,7 @@ class App extends React.Component {
 
     this.state = {
       todo: [{ "Learn setState()": true }, { "Style my Todo List": true }],
-      typing: "",
-      selected: []
+      typing: ""
     };
   } // constructor
 
@@ -38,23 +38,54 @@ class App extends React.Component {
   };
 
   handleClear = e => {
-    let { todo, selected } = this.state;
-    console.log("Selected before: ", selected);
-    todo = todo.filter(item => {
+    let { todo } = this.state;
+
+    const selectRange = this.getSelectedRange();
+    console.log(selectRange);
+    todo = todo.filter((item, i) => {
       const name = Object.keys(item)[0];
-      const isSelected = selected.indexOf(name) > -1;
-      if (isSelected) isSelected.splice(selected.indexOf(name), 1);
-      return item[name] || isSelected;
+      let notSelected = true;
+      if (selectRange) {
+        if (i >= selectRange.start && i <= selectRange.end) {
+          notSelected = false;
+        }
+      }
+      return item[name] && notSelected;
     });
 
-    this.setState({ todo, selected });
+    this.setState({ todo });
+  };
+
+  getSelectedRange = () => {
+    const { todo } = this.state;
+    const selection = window.getSelection();
+    let start, end;
+    if (selection.anchorNode && selection.extentNode) {
+      start = Number(selection.anchorNode.parentNode.dataset.index);
+      end = Number(selection.extentNode.parentNode.dataset.index);
+
+      if (start !== start) start = todo.length - 1;
+      if (end !== end) end = todo.length - 1;
+      selection.empty();
+    }
+
+    if (typeof start === "number" && typeof end === "number") {
+      return start < end
+        ? { start: start, end: end }
+        : { start: end, end: start };
+    }
+    return null;
   };
 
   render() {
     return (
       <div className="container">
         <h1>Todo List: MVP</h1>
-        <CreateList todo={this.state.todo} clicked={this.handleItemClick} />
+        <CreateList
+          todo={this.state.todo}
+          clicked={this.handleItemClick}
+          selected={this.handleSelect}
+        />
         <CreateForm
           typing={this.state.typing}
           handleChange={this.handleChange}
