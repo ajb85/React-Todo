@@ -5,7 +5,7 @@ import "./list.css";
 export default props => {
   let fullList = props.todo.map((itemObj, i) => {
     let className = "";
-    if (itemObj.complete) className = "strike";
+    if (itemObj.complete) className = "complete";
     return (
       <li
         key={i}

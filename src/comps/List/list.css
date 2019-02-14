@@ -6,8 +6,10 @@
 .todoList li {
   cursor: pointer;
   margin: 7px;
+  list-style-type: circle;
 }
 
-.todoList li.strike {
+.todoList li.complete {
   text-decoration: line-through;
+  list-style-type: disc;
 }

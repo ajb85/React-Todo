@@ -29,32 +29,41 @@ class App extends React.Component {
 
   handleItemClick = (i, e) => {
     let { todo } = this.state;
+
+    // Verifying the click event is on the <li> element. If not, do nothing
     if (e.target.tagName === "LI") {
       todo[i].complete = !todo[i].complete;
+      this.setState({ todo });
     }
-
-    this.setState({ todo });
   };
 
   handleChange = e => {
+    // Update "typing" state as user types
     this.setState({ typing: e.target.value });
   };
 
   handleSubmit = () => {
     let { todo, typing } = this.state;
-
-    todo.push({ name: typing, complete: false });
-    typing = "";
-    this.setState({ todo, typing });
+    // Verify the user has typed something
+    if (typing.length) {
+      // Push a new object into "todo" with user input.  Reset typing.
+      todo.push({ name: typing, complete: false });
+      typing = "";
+      this.setState({ todo, typing });
+    }
   };
 
   handleClear = () => {
     let { todo } = this.state;
 
     const selectRange = this.getSelectedRange();
+
+    // Upon clicking clear button, clear out anything highlighted and
+    // anything marked complete
     todo = todo.filter((item, i) => {
       let notSelected = true;
       if (selectRange) {
+        // Does the current index fall between the selected range?
         if (i >= selectRange.start && i <= selectRange.end) {
           notSelected = false;
         }
@@ -70,9 +79,14 @@ class App extends React.Component {
     const selection = window.getSelection();
     let start, end;
     if (selection.anchorNode && selection.focusNode) {
+      // dataset returns a string, convert to a number
       start = Number(selection.anchorNode.parentNode.dataset.index);
       end = Number(selection.focusNode.parentNode.dataset.index);
 
+      // Inputs/buttons can be selected, even with user-select: none
+      // In that case, start/end will return "undefined" -->
+      // Number(undefined) = NaN.  So if NaN is found, select to the last
+      // list item
       if (isNaN(start)) start = todo.length - 1;
       if (isNaN(end)) end = todo.length - 1;
 
@@ -88,7 +102,6 @@ class App extends React.Component {
   };
 
   render() {
-    //console.log(this.state.todo);
     return (
       <div className="container">
         <h1>Todo List: MVP</h1>

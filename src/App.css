@@ -1,3 +1,5 @@
+/* If the user can't select text, it won't get deleted by mistake
+when I remove elements that have been highlighted.  Cheating or lifehack? */
 h1 {
   -webkit-user-select: none;
   -moz-user-select: none;
