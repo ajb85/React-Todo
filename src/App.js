@@ -70,7 +70,6 @@ class App extends React.Component {
       }
       return !item.complete && notSelected;
     });
-    console.log(todo);
     this.setState({ todo });
   };
 
