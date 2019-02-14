@@ -33,9 +33,8 @@ class App extends React.Component {
   } // constructor
 
   componentDidMount() {
-    console.log(localStorage);
     //localStorage.removeItem("todo");
-    if (!localStorage.length) {
+    if (!localStorage.todo) {
       localStorage.setItem("todo", defaultData);
     }
     this.setState({ todo: JSON.parse(localStorage.getItem("todo")) });
@@ -65,7 +64,6 @@ class App extends React.Component {
   };
 
   handleChange = (context, e) => {
-    console.log("e: ", e, " | context: ", context);
     // Update "typing" state as user types
     this.setState({ [context]: e.target.value });
   };

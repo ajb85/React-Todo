@@ -3,11 +3,13 @@ import "./list.css";
 
 // props: todo, clicked, search, selected
 export default props => {
+  // If the user has something in the search field, this will filter out
+  // any results that aren't a substring of the list item
+  // Turn remaining items into <li>'s
   let fullList = props.todo
-    // If the user has something in the search field, this will filter out
-    // any results that aren't a substring of the list item
-    .filter(itemObj => itemObj.name.includes(props.search))
-    // Turn remaining items into <li>'s
+    .filter(itemObj =>
+      itemObj.name.toLowerCase().includes(props.search.toLowerCase())
+    )
     .map((itemObj, i) => {
       let className = "";
       if (itemObj.complete) className = "complete";
