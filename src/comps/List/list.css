@@ -3,11 +3,11 @@
   max-width: 250px;
 }
 
-.todoList p {
+.todoList li {
   cursor: pointer;
   margin: 7px;
 }
 
-.todoList p.strike {
+.todoList li.strike {
   text-decoration: line-through;
 }

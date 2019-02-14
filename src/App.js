@@ -8,17 +8,29 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      todo: [{ "Learn setState()": true }, { "Style my Todo List": true }],
+      todo: [
+        { name: "Navigate to my To Do list", complete: true },
+        {
+          name: "Learn I can click an item to complete it",
+          complete: false
+        },
+        {
+          name: 'Click "Clear Completed" to remove completed items.',
+          complete: false
+        },
+        {
+          name: "Highlight items then clear to remove multiples at once",
+          complete: false
+        }
+      ],
       typing: ""
     };
   } // constructor
 
-  handleItemClick = e => {
+  handleItemClick = (i, e) => {
     let { todo } = this.state;
-    if (e.target.tagName === "P") {
-      const index = e.target.dataset.index;
-      const name = Object.keys(todo[index])[0];
-      todo[index][name] = !todo[index][name];
+    if (e.target.tagName === "LI") {
+      todo[i].complete = !todo[i].complete;
     }
 
     this.setState({ todo });
@@ -28,31 +40,28 @@ class App extends React.Component {
     this.setState({ typing: e.target.value });
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
+  handleSubmit = () => {
     let { todo, typing } = this.state;
 
-    todo.push({ [typing]: true });
+    todo.push({ name: typing, complete: false });
     typing = "";
     this.setState({ todo, typing });
   };
 
-  handleClear = e => {
+  handleClear = () => {
     let { todo } = this.state;
 
     const selectRange = this.getSelectedRange();
-    console.log(selectRange);
     todo = todo.filter((item, i) => {
-      const name = Object.keys(item)[0];
       let notSelected = true;
       if (selectRange) {
         if (i >= selectRange.start && i <= selectRange.end) {
           notSelected = false;
         }
       }
-      return item[name] && notSelected;
+      return !item.complete && notSelected;
     });
-
+    console.log(todo);
     this.setState({ todo });
   };
 
@@ -60,12 +69,13 @@ class App extends React.Component {
     const { todo } = this.state;
     const selection = window.getSelection();
     let start, end;
-    if (selection.anchorNode && selection.extentNode) {
+    if (selection.anchorNode && selection.focusNode) {
       start = Number(selection.anchorNode.parentNode.dataset.index);
-      end = Number(selection.extentNode.parentNode.dataset.index);
+      end = Number(selection.focusNode.parentNode.dataset.index);
 
-      if (start !== start) start = todo.length - 1;
-      if (end !== end) end = todo.length - 1;
+      if (isNaN(start)) start = todo.length - 1;
+      if (isNaN(end)) end = todo.length - 1;
+
       selection.empty();
     }
 
@@ -78,6 +88,7 @@ class App extends React.Component {
   };
 
   render() {
+    //console.log(this.state.todo);
     return (
       <div className="container">
         <h1>Todo List: MVP</h1>

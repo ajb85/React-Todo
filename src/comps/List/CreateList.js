@@ -4,20 +4,19 @@ import "./list.css";
 // props: todo, clicked
 export default props => {
   let fullList = props.todo.map((itemObj, i) => {
-    let name = Object.keys(itemObj)[0];
     let className = "";
-    if (!itemObj[name]) className = "strike";
+    if (itemObj.complete) className = "strike";
     return (
-      <p
+      <li
         key={i}
-        onMouseDown={props.clicked}
+        onMouseDown={props.clicked.bind(this, i)}
         className={className}
         data-index={i}
       >
-        {name}
-      </p>
+        {itemObj.name}
+      </li>
     );
   });
 
-  return <div className="todoList">{fullList}</div>;
+  return <ul className="todoList">{fullList}</ul>;
 };
