@@ -1,0 +1,16 @@
+.form {
+}
+
+.form button {
+  margin: 0 5px;
+  border-radius: 5px;
+}
+
+/* This doesn't work but it was worth a try */
+button,
+input {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+}

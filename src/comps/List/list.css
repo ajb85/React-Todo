@@ -1,0 +1,15 @@
+.todoList {
+  margin-bottom: 25px;
+  max-width: 250px;
+}
+
+.todoList li {
+  cursor: pointer;
+  margin: 7px;
+  list-style-type: circle;
+}
+
+.todoList li.complete {
+  text-decoration: line-through;
+  list-style-type: disc;
+}
